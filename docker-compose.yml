@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: remote-lock-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - remote-lock-redis-network
+    volumes:
+      - remote-lock-redis-data:/data
+  postgres:
+    image: postgres:latest
+    container_name: remote-lock-postgres
+    environment:
+      POSTGRES_USER: remotelock
+      POSTGRES_PASSWORD: remotelock
+      POSTGRES_DB: remotelockdb
+    ports:
+      - "5432:5432"
+    networks:
+      - remote-lock-postgres-network
+    volumes:
+      - remote-lock-postgres-data:/data/db
+
+networks:
+  remote-lock-redis-network:
+  remote-lock-postgres-network:
+
+volumes:
+  remote-lock-redis-data:
+  remote-lock-postgres-data:
